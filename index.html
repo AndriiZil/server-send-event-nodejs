@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SSE</title>
+</head>
+<body>
+    <h2>SSE</h2>
+    <div id="data"></div>
+    <script>
+        const eventSource = new EventSource('http://localhost:8080/stream');
+        const dataElem = document.getElementById('data');
+
+        eventSource.onmessage = message => {
+            dataElem.innerText = `id ${message.lastEventId} data: ${message.data}`;
+        }
+
+        eventSource.addEventListener('end-of-stream', () => {
+            console.log('End of stream');
+            eventSource.close();
+        });
+    </script>
+</body>
+</html>
